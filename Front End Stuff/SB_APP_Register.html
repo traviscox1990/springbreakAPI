@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title> Welcome to Crawler </title>
+		<script type = "text/javascript">
+			var xhr;
+
+			if (window.ActiveXObject)
+			{
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			else if (window.XMLHttpRequest)
+			{
+				xhr = new XMLHttpRequest();
+			}
+
+			function callServer()
+			{
+				var user = document.getElementById("newUser").userName.value;
+				var url = "?username=" +escape(user);
+
+				xhr.open("GET",url,true);
+
+				xhr.onreadystatechange = alertPage;
+
+				xhr.send(null);
+			}
+
+			function alertPage()
+			{
+				if ((xhr.readyState == 4) && (xhr.status == 200))
+				{
+					var response = xhr.responseText;
+					if (response == "True")
+					{
+						alert("Username already exists. Please choose another");
+						return;
+					}
+				}
+			}
+   
+
+   
+		</script>
+	</head>
+	<body>
+		<form id="newUser" action="" method="post">
+
+			<h3> New User Registration </h3>
+			<table>
+				<tr>
+					<td> Desired User Name: </td>
+					<td> <input type="text" name="userName" onchange="callServer();" > </td>
+				</tr>
+			
+				<tr>
+					<td> Enter a password: </td>
+					<td> <input type="password" name="password1"> </td>
+				</tr>
+			
+				<tr>
+					<td> Repeat password: </td>
+					<td> <input type="password" name="password2"> </td>
+				</tr>
+			</table>
+			
+			<input type="button" name="register" value="Register">
+			
+			<input type="reset" value="Clear">
+			
+			<p>
+				Note: The user name must start with a letter. The user name and password must be between 6 and 10 characters. User names and password can only contain letters and digits, additional password can contaain underscores. Finally the password must have at least one lower case letter, at least one upper case letter and at least one digit.
+			</p>
+
+		</form>
+
+		<script text="text/javascript">
+			document.getElementById("newUser").register.onclick=validateUser;
+			function validateUser()
+			{
+				var elt=document.getElementById("newUser"); 
+        
+				if(
+					elt.userName.value.search(/[a-zA-Z0-9]{6}/) == -1 ||
+					elt.userName.value.search(/[a-zA-Z0-9]{6}$/) >= 5 ||
+					elt.userName.value.search(/[^a-zA-Z0-9]/) != -1 ||
+					elt.password1.value != elt.password2.value ||
+					elt.userName.value.search(/^[a-zA-Z]/) == -1 ||
+					elt.password1.value.search(/\w{6}/) == -1 ||
+					elt.password1.value.search(/\w{6}$/) >= 5 ||
+					elt.password1.value.search(/[^a-zA-Z0-9_]/) != -1 ||
+					elt.password1.value.search(/[a-z]+/) == -1 ||
+					elt.password1.value.search(/[A-Z]+/) == -1 ||
+					elt.password1.value.search(/[0-9]+/) == -1)
+					{
+						return alert("Invalid Input");
+					}
+				return alert("Passed Validation"); 
+			}
+
+		</script>
+
+
+
+	</body>
+
+</html>
